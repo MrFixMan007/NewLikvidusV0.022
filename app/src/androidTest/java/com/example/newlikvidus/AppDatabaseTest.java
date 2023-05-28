@@ -22,7 +22,8 @@ public class AppDatabaseTest extends TestCase {
     private AppDatabase db;
     private SaveDao saveDao;
     private TypeDao typeDao;
-    private static Save[] saves = new Save[]{new Save("Расчёт температуры ликвидус", "описано", "26.05.2023", 1)};
+    private static Save[] saves = new Save[]{new Save("Расчёт температуры ликвидус", "описано", "26.05.2023", 1),
+            new Save("Расчёт температуры ликвидус фасонный", "описано да", "28.05.2023", 1)};
     private static Type[] types = new Type[]{new Type("Температура")};
     @Before
     public void createDb() throws Exception{
@@ -52,7 +53,20 @@ public class AppDatabaseTest extends TestCase {
         saves[0].setSave_id(saveDao.insert(saves[0]));
         assertEquals("\nОжидалось:\n"+saves[0]+"\nНо вышло:\n"+saveDao.getAll().get(0)+"\n", saves[0], saveDao.getAll().get(0));
     }
+    @Test
+    public void getSave2(){
+        typeDao.insert(types[0]);
+        saves[0].setSave_id(saveDao.insert(saves[0]));
+        assertEquals("\nОжидалось:\n"+saves[0]+"\nНо вышло:\n"+saveDao.getById(1)+"\n", saves[0], saveDao.getById(1));
+    }
 
+    @Test
+    public void getSave3(){
+        typeDao.insert(types[0]);
+        saves[0].setSave_id(saveDao.insert(saves[0]));
+        saves[1].setSave_id(saveDao.insert(saves[1]));
+        assertEquals("\nОжидалось:\n"+saves[1]+"\nНо вышло:\n"+saveDao.getById(2)+"\n", saves[1], saveDao.getById(2));
+    }
     @After
     public void closeDb() throws Exception{
         db.close();
